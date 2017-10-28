@@ -1,0 +1,1 @@
+# serverless_custom_authorizer_sample
