@@ -1,0 +1,19 @@
+{
+  "name": "my-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^4.10.0",
+    "jsonwebtoken": "^8.1.0",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
