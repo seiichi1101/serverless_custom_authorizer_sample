@@ -16,7 +16,19 @@ service: my-service
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
-
+custom:
+  documentation:
+    models:
+      -
+        name: "ErrorResponse"
+        description: "This is an error"
+        contentType: "application/json"
+        schema: ${file(models/error.json)}
+      -
+        name: "CreateResponse"
+        description: "Model for creating something"
+        contentType: "application/json"
+        schema: ${file(models/create_request.json)}
 provider:
   name: aws
   runtime: nodejs6.10
@@ -66,14 +78,48 @@ functions:
         - common/**
     events:
       - http:
-          path: getSelf
+          path: self
           method: get
-          cors: true
+          integration: lambda-proxy
           authorizer:
             name: authorization
             resultTtlInSeconds: 0
             identitySource: method.request.header.Authorization
             type: token
+          documentation:
+            summary: "Create something"
+            description: "Creates the thing you need"
+            methodResponses:
+              -
+                statusCode: "200"
+                responseModels:
+                  "application/json": "CreateResponse"
+              -
+                statusCode: "400"
+                responseModels:
+                  "application/json": "ErrorResponse"
+          cors:
+            origin: '*'
+            # headers:
+            #   - Content-Type
+            #   - X-Amz-Date
+            #   - Authorization
+            #   - X-Api-Key
+            #   - X-Amz-Security-Token
+            #   - X-Amz-User-Agent
+            # allowCredentials: false
+          # response:
+          #   headers:
+          #     Content-Type: "'text/html'"
+          #   template: $input.path('$')
+          #   statusCodes:
+          #       201:
+          #           pattern: '' # Default response method
+          #       409:
+          #           pattern: '.*"statusCode":409,.*' # JSON response
+          #           template: $input.path("$.errorMessage") # JSON return object
+          #           headers:
+          #             Content-Type: "'application/json+hal'"
   authorization:
     handler: authorization/index.handler
     package:
@@ -129,3 +175,7 @@ resources:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-aws-documentation

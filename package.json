@@ -9,7 +9,10 @@
     "request": "^2.83.0"
   },
   "devDependencies": {
-    "eslint": "^4.10.0"
+    "eslint": "^4.10.0",
+    "serverless-aws-documentation": "^0.8.0",
+    "serverless-dynamodb-local": "^0.2.26",
+    "serverless-offline": "^3.16.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
